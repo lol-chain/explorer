@@ -1,5 +1,3 @@
-import Config
-
 # Import all plugins from `rel/plugins`
 # They can then be used by adding `plugin MyPlugin` to
 # either an environment, or release definition, where
@@ -9,33 +7,11 @@ import Config
 |> Path.wildcard()
 |> Enum.map(&Code.eval_file(&1))
 
-defer = fn fun ->
-  apply(fun, [])
-end
-
-app_root = fn ->
-  if String.contains?(File.cwd!(), "apps") do
-    Path.join([File.cwd!(), "/../../"])
-  else
-    File.cwd!()
-  end
-end
-
-cookie =
-  defer.(fn ->
-    cookie_bytes =
-      :crypto.strong_rand_bytes(32)
-      |> Base.encode32()
-
-    :ok = File.write!(Path.join(app_root.(), ".erlang_cookie"), cookie_bytes)
-    :erlang.binary_to_atom(cookie_bytes, :utf8)
-  end)
-
-use Mix.Releases.Config,
-    # This sets the default release built by `mix release`
+use Distillery.Releases.Config,
+    # This sets the default release built by `mix distillery.release`
     default_release: :default,
-    # This sets the default environment used by `mix release`
-    default_environment: config_env()
+    # This sets the default environment used by `mix distillery.release`
+    default_environment: Mix.env()
 
 # For a full list of config options for both releases
 # and environments, visit https://hexdocs.pm/distillery/config/distillery.html
@@ -55,32 +31,28 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: :"i6E,!mJ6|E&|.VPaDywo@N.o}BgmC$UdKXW[aK,(@U0Asfpp/NergA;CR%YW4;i6"
+  set cookie: :"!5s}a;_(;6J62%cM69qlfmJAb.sl1rOja?%h[KcGBd;e*FsBR;t5qz4jZ@j5YlqZ"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: cookie
+  set cookie: :"}qF2/82J>UO?2|kv&P1KPdD(GuV*QhCw6;n&c{lugYMu0T;z$|Z<znJp!D<M$[4D"
   set vm_args: "rel/vm.args"
 end
 
 # You may define one or more releases in this file.
 # If you have not set a default release, or selected one
-# when running `mix release`, the first release in the file
+# when running `mix distillery.release`, the first release in the file
 # will be used by default
 
-release :blockscout do
-  set version: "1.2.0-beta"
+release :releaseExplorer do
+  set version: "0.1.0"
   set applications: [
     :runtime_tools,
     block_scout_web: :permanent,
     ethereum_jsonrpc: :permanent,
     explorer: :permanent,
     indexer: :permanent
-  ]
-  set commands: [
-    migrate: "rel/commands/migrate.sh",
-    seed: "rel/commands/seed.sh",
   ]
 end
