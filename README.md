@@ -18,7 +18,7 @@ See the [project documentation](https://docs.blockscout.com/) for instructions:
 
 ## Acknowledgements
 
-We would like to thank the [Electronero Network](https://electronero.org/) [Crystaleum](https://crystaleum.org/) for their engineering support.
+We would like to thank the [Electronero Network](https://electronero.org/) && [Crystaleum](https://crystaleum.org/) for their engineering support.
 Blockscout team would like to thank the [EthPrize foundation](http://ethprize.io/) for their funding support.
 
 Thanks Blockscout!
